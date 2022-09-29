@@ -2,10 +2,7 @@ package com.kaushik.shoppingapp.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -16,4 +13,7 @@ public class Review {
     private String name;
     private int rating;
     private String comment;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "FK_REVIEW_PRODUCT"))
+    private Product product;
 }

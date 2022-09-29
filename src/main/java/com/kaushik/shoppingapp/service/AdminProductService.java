@@ -11,7 +11,7 @@ public interface AdminProductService {
 
     boolean deleteProduct(Long id);
 
-    Product updateProduct(Long id, ProductModel productModel);
+    ProductModel updateProduct(Long id, ProductModel productModel);
 
     ProductResponseModel getProductByUser(Integer pageNumber,Integer pageSize,String sortBy, String sortDir, Long userId);
 }

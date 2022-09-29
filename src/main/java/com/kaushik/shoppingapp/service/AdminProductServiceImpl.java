@@ -52,7 +52,7 @@ public class AdminProductServiceImpl implements AdminProductService{
     }
 
     @Override
-    public Product updateProduct(Long id, ProductModel productModel) {
+    public ProductModel updateProduct(Long id, ProductModel productModel) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "Id", id));
         product.setName(productModel.getName());
         product.setDescription(productModel.getDescription());
@@ -62,8 +62,8 @@ public class AdminProductServiceImpl implements AdminProductService{
         product.setRatings(productModel.getRatings());
         product.setNumberOfReviews(productModel.getNumberOfReviews());
         product.setImageName(productModel.getImageName());
-        productRepository.save(product);
-        return product;
+        Product prod = productRepository.save(product);
+        return modelMapper.map(prod, ProductModel.class);
     }
 
     @Override
