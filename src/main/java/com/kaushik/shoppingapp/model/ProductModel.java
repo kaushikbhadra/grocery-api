@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +16,9 @@ public class ProductModel {
     private String name;
     @NotEmpty(message = "description not be empty!")
     private String description;
-    private double price;
+    @DecimalMin(value = "0.0", inclusive = false)
+    @Digits(integer=6, fraction=2)
+    private BigDecimal price;
     private int ratings;
     @NotEmpty(message = "category not be empty! ")
     private String category;
@@ -24,7 +27,7 @@ public class ProductModel {
     private String imageName;
     private UserModel user;
 
-    public ProductModel(Long id, String name, String description, double price, int ratings, String category, int stock, int numberOfReviews, String imageName) {
+    public ProductModel(Long id, String name, String description, BigDecimal price, int ratings, String category, int stock, int numberOfReviews, String imageName) {
         this.id = id;
         this.name = name;
         this.description = description;

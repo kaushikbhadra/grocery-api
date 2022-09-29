@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+
+
 @RestController
 public class ProductController {
 
@@ -31,5 +33,15 @@ public class ProductController {
     public ResponseEntity<ProductModel> getProduct(@PathVariable Long id){
         ProductModel productModel= productService.getProductById(id);
         return ResponseEntity.ok(productModel);
+    }
+    @GetMapping("/products/search")
+    public ResponseEntity<ProductResponseModel> searchProduct(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir,
+            @RequestParam(value = "keyword", required = false) String keyword
+    ){
+        return ResponseEntity.ok(productService.searchProduct(pageNumber, pageSize, sortBy, sortDir,keyword));
     }
 }

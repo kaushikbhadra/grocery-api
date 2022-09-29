@@ -5,6 +5,7 @@ import com.kaushik.shoppingapp.exception.ResourceNotFoundException;
 import com.kaushik.shoppingapp.model.ProductModel;
 import com.kaushik.shoppingapp.model.ProductResponseModel;
 import com.kaushik.shoppingapp.repository.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ import static com.kaushik.shoppingapp.service.AdminProductServiceImpl.getProduct
 public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
     @Override
     public ProductResponseModel getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
 
@@ -51,4 +55,15 @@ public class ProductServiceImpl implements ProductService{
         BeanUtils.copyProperties(product, productModel);
         return productModel;
     }
+
+    @Override
+    public ProductResponseModel searchProduct(Integer pageNumber, Integer pageSize, String sortBy, String sortDir, String keyword){
+        Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Product> pageProducts = productRepository.findByNameContaining(keyword, pageable);
+        List<Product> products = pageProducts.getContent();
+        List<ProductModel> productModels = products.stream().map(product -> modelMapper.map(product, ProductModel.class)).collect(Collectors.toList());
+        return getProductResponseModel(pageProducts, productModels);
+    }
+
 }

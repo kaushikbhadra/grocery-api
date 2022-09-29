@@ -71,7 +71,7 @@ public class AdminProductServiceImpl implements AdminProductService{
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
         Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        Page<Product> pageProducts = productRepository.findProductByUser(user,pageable);
+        Page<Product> pageProducts = productRepository.findByUser(user,pageable);
             List<Product> products = pageProducts.getContent();
             List<ProductModel> productModels = products.stream().map(product -> modelMapper.map(product, ProductModel.class)).collect(Collectors.toList());
         return getProductResponseModel(pageProducts, productModels);

@@ -3,6 +3,7 @@ package com.kaushik.shoppingapp.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -13,7 +14,7 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private double price;
+    private BigDecimal price;
     private int ratings;
     private String category;
     private int stock;
@@ -24,7 +25,7 @@ public class Product {
     private User user;
     private Date createAt;
     public Product() {
-        this.price = 0.0;
+        this.price = BigDecimal.valueOf(0.0);
         this.ratings = 0;
         this.stock = 0;
         this.numberOfReviews = 0;
