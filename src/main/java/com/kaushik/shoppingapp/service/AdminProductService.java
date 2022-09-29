@@ -2,6 +2,7 @@ package com.kaushik.shoppingapp.service;
 
 import com.kaushik.shoppingapp.entity.Product;
 import com.kaushik.shoppingapp.model.ProductModel;
+import com.kaushik.shoppingapp.model.ProductResponseModel;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface AdminProductService {
 
     Product updateProduct(Long id, ProductModel productModel);
 
-    List<ProductModel> getProductByUser(Long userId);
+    ProductResponseModel getProductByUser(Integer pageNumber,Integer pageSize,String sortBy, String sortDir, Long userId);
 }

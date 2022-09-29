@@ -3,9 +3,14 @@ package com.kaushik.shoppingapp.service;
 import com.kaushik.shoppingapp.entity.User;
 import com.kaushik.shoppingapp.exception.ResourceNotFoundException;
 import com.kaushik.shoppingapp.model.UserModel;
+import com.kaushik.shoppingapp.model.UserResponseModel;
 import com.kaushik.shoppingapp.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +22,11 @@ public class AdminUserServiceImpl implements AdminUserService{
     @Autowired
     private UserRepository userRepository;
     @Override
-    public List<UserModel> getAllUsers() {
-        List<User> users = userRepository.findAll();
+    public UserResponseModel getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<User> pageUsers = userRepository.findAll(pageable);
+        List<User> users = pageUsers.getContent();
         List<UserModel> userModels = users.stream()
                 .map(user -> new UserModel(
                         user.getId(),
@@ -26,7 +34,14 @@ public class AdminUserServiceImpl implements AdminUserService{
                         user.getEmail(),
                         user.getRole()
                 )).collect(Collectors.toList());
-        return userModels;
+        UserResponseModel userResponseModel = new UserResponseModel();
+        userResponseModel.setUsers(userModels);
+        userResponseModel.setPageNumber(pageUsers.getNumber());
+        userResponseModel.setPageSize(pageUsers.getSize());
+        userResponseModel.setTotalElements(pageUsers.getTotalElements());
+        userResponseModel.setTotalPages(pageUsers.getTotalPages());
+        userResponseModel.setLastPage(pageUsers.isLast());
+        return userResponseModel;
     }
 
     @Override

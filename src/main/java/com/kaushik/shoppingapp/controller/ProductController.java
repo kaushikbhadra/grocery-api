@@ -1,14 +1,15 @@
 package com.kaushik.shoppingapp.controller;
 
 import com.kaushik.shoppingapp.model.ProductModel;
+import com.kaushik.shoppingapp.model.ProductResponseModel;
 import com.kaushik.shoppingapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 public class ProductController {
@@ -17,8 +18,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<ProductModel>> getProducts(){
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<ProductResponseModel> getProducts(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+    ){
+        return ResponseEntity.ok(productService.getAllProducts(pageNumber, pageSize, sortBy, sortDir));
     }
 
     @GetMapping("/product/{id}")

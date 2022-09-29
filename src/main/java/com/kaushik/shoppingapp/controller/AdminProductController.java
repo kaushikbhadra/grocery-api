@@ -2,6 +2,7 @@ package com.kaushik.shoppingapp.controller;
 
 import com.kaushik.shoppingapp.entity.Product;
 import com.kaushik.shoppingapp.model.ProductModel;
+import com.kaushik.shoppingapp.model.ProductResponseModel;
 import com.kaushik.shoppingapp.service.AdminProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,14 @@ public class AdminProductController {
     }
 
     @GetMapping("{userId}/products")
-    public ResponseEntity<List<ProductModel>> getProductByUser(@PathVariable Long userId){
-        return  ResponseEntity.ok(adminProductService.getProductByUser(userId));
+    public ResponseEntity<ProductResponseModel> getProductByUser(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+            ,@PathVariable Long userId
+    ){
+        return  ResponseEntity.ok(adminProductService.getProductByUser(pageNumber, pageSize, sortBy, sortDir,userId));
     }
     @DeleteMapping("/product/{id}")
     public ResponseEntity<Map<String, Boolean>> deleteProduct(@PathVariable Long id){

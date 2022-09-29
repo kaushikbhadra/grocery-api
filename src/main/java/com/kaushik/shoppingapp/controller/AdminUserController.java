@@ -2,6 +2,7 @@ package com.kaushik.shoppingapp.controller;
 
 import com.kaushik.shoppingapp.entity.User;
 import com.kaushik.shoppingapp.model.UserModel;
+import com.kaushik.shoppingapp.model.UserResponseModel;
 import com.kaushik.shoppingapp.service.AdminUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,8 +19,13 @@ public class AdminUserController {
     private AdminUserService adminUserService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserModel>> getUsers(){
-        return ResponseEntity.ok(adminUserService.getAllUsers());
+    public ResponseEntity<UserResponseModel> getUsers(
+            @RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) Integer pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
+    ){
+        return ResponseEntity.ok(adminUserService.getAllUsers(pageNumber, pageSize, sortBy, sortDir));
     }
 
     @GetMapping("/user/{id}")
