@@ -68,7 +68,7 @@ public class AdminProductController {
         ProductModel productModel = productService.getProductById(id);
         String fileName = fileService.uploadImage(path, imageFile);
         productModel.setImageName(fileName);
-        return ResponseEntity.ok(adminProductService.updateProduct(id,productModel));
+        return  new ResponseEntity<>(adminProductService.updateProduct(id,productModel), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/product/{productImageName}", produces = MediaType.IMAGE_JPEG_VALUE)

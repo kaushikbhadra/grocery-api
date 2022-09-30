@@ -26,6 +26,7 @@ public class ProductController {
             @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir
     ){
+
         return ResponseEntity.ok(productService.getAllProducts(pageNumber, pageSize, sortBy, sortDir));
     }
 

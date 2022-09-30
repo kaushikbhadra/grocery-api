@@ -10,7 +10,7 @@ import com.kaushik.shoppingapp.model.ProductResponseModel;
 import com.kaushik.shoppingapp.repository.ProductRepository;
 import com.kaushik.shoppingapp.repository.UserRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,8 +35,7 @@ public class AdminProductServiceImpl implements AdminProductService{
     @Override
     public ProductModel createProduct(ProductModel productModel, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));
-        Product product = new Product();
-        BeanUtils.copyProperties(productModel,product);
+        Product product = modelMapper.map(productModel,Product.class);
         product.setImageName("default.png");
         product.setCreateAt(new Date());
         product.setUser(user);

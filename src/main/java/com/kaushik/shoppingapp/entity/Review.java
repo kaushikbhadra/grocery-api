@@ -16,4 +16,7 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "FK_REVIEW_PRODUCT"))
     private Product product;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "FK_REVIEW_USER"))
+    private User user;
 }

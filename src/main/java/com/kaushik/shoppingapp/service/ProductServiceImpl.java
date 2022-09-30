@@ -28,32 +28,19 @@ public class ProductServiceImpl implements ProductService{
     private ModelMapper modelMapper;
     @Override
     public ProductResponseModel getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
-
         Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         Page<Product> pageProducts = productRepository.findAll(pageable);
         List<Product> products = pageProducts.getContent();
         List<ProductModel> productModels = products.stream()
-                .map(product -> new ProductModel(
-                        product.getId(),
-                        product.getName(),
-                        product.getDescription(),
-                        product.getPrice(),
-                        product.getStock(),
-                        product.getCategory(),
-                        product.getRatings(),
-                        product.getNumberOfReviews(),
-                        product.getImageName()
-                )).collect(Collectors.toList());
+                .map(product -> modelMapper.map(product, ProductModel.class)).collect(Collectors.toList());
         return getProductResponseModel(pageProducts, productModels);
     }
 
     @Override
     public ProductModel getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", "Id", id));
-        ProductModel productModel = new ProductModel();
-        BeanUtils.copyProperties(product, productModel);
-        return productModel;
+        return modelMapper.map(product, ProductModel.class);
     }
 
     @Override

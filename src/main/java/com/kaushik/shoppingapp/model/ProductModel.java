@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -28,17 +28,5 @@ public class ProductModel {
     private int numberOfReviews;
     private String imageName;
     private UserModel user;
-    private Set<ReviewModel> reviews = new HashSet<>();
-
-    public ProductModel(Long id, String name, String description, BigDecimal price, int ratings, String category, int stock, int numberOfReviews, String imageName) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.ratings = ratings;
-        this.category = category;
-        this.stock = stock;
-        this.numberOfReviews = numberOfReviews;
-        this.imageName = imageName;
-    }
+    private List<ReviewModel> reviews = new ArrayList<>();
 }

@@ -4,9 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -27,7 +25,7 @@ public class Product {
     private User user;
     private Date createAt;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private Set<Review> review = new HashSet<>();
+    private List<Review> review = new ArrayList<>();
     public Product() {
         this.price = BigDecimal.valueOf(0.0);
         this.ratings = 0;
