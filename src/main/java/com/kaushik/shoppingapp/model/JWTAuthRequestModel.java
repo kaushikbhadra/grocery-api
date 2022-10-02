@@ -1,7 +1,5 @@
 package com.kaushik.shoppingapp.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,14 +12,11 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+public class JWTAuthRequestModel {
 
-    private Long id;
-    @NotEmpty
-    @Size(min = 3, message = "name must be grater than 3 character!")
-    private String name;
     @Email(message = "email is not valid!")
-    private String email;
+    @NotEmpty(message = "username not be empty!")
+    private String username;
     @NotEmpty
     @Size(min = 8, max = 12, message = "password size require 8-12")
     @Pattern(regexp = "^(?=.*\\d)(?=\\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()]).{8,12}$", message = "password must be one [a-z],[A-Z],[0-9] or [@#$%^&-+=()] symbol and not space between character")

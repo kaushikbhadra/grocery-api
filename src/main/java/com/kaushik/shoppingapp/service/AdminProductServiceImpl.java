@@ -9,9 +9,9 @@ import com.kaushik.shoppingapp.model.ProductModel;
 import com.kaushik.shoppingapp.model.ProductResponseModel;
 import com.kaushik.shoppingapp.repository.ProductRepository;
 import com.kaushik.shoppingapp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,14 +24,11 @@ import java.util.stream.Collectors;
 
 
 @Service
+@RequiredArgsConstructor
 public class AdminProductServiceImpl implements AdminProductService{
-
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
     @Override
     public ProductModel createProduct(ProductModel productModel, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));

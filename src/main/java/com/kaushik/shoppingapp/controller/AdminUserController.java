@@ -43,9 +43,9 @@ public class AdminUserController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/user/{id}")
-    public ResponseEntity<User> updateUserRole(@Valid @RequestBody UserModel userModel, @PathVariable Long id){
-        User user = adminUserService.updateUserRole(id, userModel);
-        return ResponseEntity.ok(user);
-    }
+//    @PutMapping("/user/{id}")
+//    public ResponseEntity<User> updateUserRole(@Valid @RequestBody UserModel userModel, @PathVariable Long id){
+//        User user = adminUserService.updateUserRole(id, userModel);
+//        return ResponseEntity.ok(user);
+//    }
 }

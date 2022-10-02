@@ -13,5 +13,5 @@ public interface AdminUserService {
 
     boolean deleteUser(Long id);
 
-    User updateUserRole(Long id, UserModel userModel);
+//    User updateUserRole(Long id, UserModel userModel);
 }

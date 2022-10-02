@@ -5,9 +5,8 @@ import com.kaushik.shoppingapp.exception.ResourceNotFoundException;
 import com.kaushik.shoppingapp.model.ProductModel;
 import com.kaushik.shoppingapp.model.ProductResponseModel;
 import com.kaushik.shoppingapp.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +19,11 @@ import java.util.stream.Collectors;
 import static com.kaushik.shoppingapp.service.AdminProductServiceImpl.getProductResponseModel;
 
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
-    @Autowired
-    private ProductRepository productRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
     @Override
     public ProductResponseModel getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
         Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();

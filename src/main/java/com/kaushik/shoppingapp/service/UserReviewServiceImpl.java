@@ -8,21 +8,17 @@ import com.kaushik.shoppingapp.model.ReviewModel;
 import com.kaushik.shoppingapp.repository.ProductRepository;
 import com.kaushik.shoppingapp.repository.ReviewRepository;
 import com.kaushik.shoppingapp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserReviewServiceImpl implements UserReviewService{
-
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private ReviewRepository reviewRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final ReviewRepository reviewRepository;
+    private final ModelMapper modelMapper;
     @Override
     public ReviewModel createReview(ReviewModel reviewModel, Long productId, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "Id", userId));

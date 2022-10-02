@@ -4,20 +4,22 @@ import com.kaushik.shoppingapp.entity.User;
 import com.kaushik.shoppingapp.exception.ResourceNotFoundException;
 import com.kaushik.shoppingapp.model.UserModel;
 import com.kaushik.shoppingapp.repository.UserRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
     @Override
     public User registerUser(UserModel userModel) {
         User user = new User();
-        BeanUtils.copyProperties(userModel,user);
-        user.setRole("user");
+        modelMapper.map(userModel, user);
+        user.setPassword(passwordEncoder.encode(userModel.getPassword()));
         userRepository.save(user);
         return user;
     }

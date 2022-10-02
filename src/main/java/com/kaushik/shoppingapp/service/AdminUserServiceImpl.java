@@ -5,8 +5,9 @@ import com.kaushik.shoppingapp.exception.ResourceNotFoundException;
 import com.kaushik.shoppingapp.model.UserModel;
 import com.kaushik.shoppingapp.model.UserResponseModel;
 import com.kaushik.shoppingapp.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminUserServiceImpl implements AdminUserService{
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
     @Override
     public UserResponseModel getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
         Sort sort = (sortDir.equalsIgnoreCase("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
@@ -28,12 +30,7 @@ public class AdminUserServiceImpl implements AdminUserService{
         Page<User> pageUsers = userRepository.findAll(pageable);
         List<User> users = pageUsers.getContent();
         List<UserModel> userModels = users.stream()
-                .map(user -> new UserModel(
-                        user.getId(),
-                        user.getName(),
-                        user.getEmail(),
-                        user.getRole()
-                )).collect(Collectors.toList());
+                .map(user -> modelMapper.map(user, UserModel.class)).collect(Collectors.toList());
         UserResponseModel userResponseModel = new UserResponseModel();
         userResponseModel.setUsers(userModels);
         userResponseModel.setPageNumber(pageUsers.getNumber());
@@ -59,11 +56,11 @@ public class AdminUserServiceImpl implements AdminUserService{
         return true;
     }
 
-    @Override
-    public User updateUserRole(Long id, UserModel userModel) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
-        user.setRole(userModel.getRole());
-        userRepository.save(user);
-        return user;
-    }
+//    @Override
+//    public User updateUserRole(Long id, UserModel userModel) {
+//        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("user", "id", id));
+//        user.setRole(userModel.getRole());
+//        userRepository.save(user);
+//        return user;
+//    }
 }
