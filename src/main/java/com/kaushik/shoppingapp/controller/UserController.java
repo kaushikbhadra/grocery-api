@@ -3,7 +3,7 @@ package com.kaushik.shoppingapp.controller;
 import com.kaushik.shoppingapp.entity.User;
 import com.kaushik.shoppingapp.model.UserModel;
 import com.kaushik.shoppingapp.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +12,10 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
+
     private UserService userService;
 
     @PostMapping("/register")
